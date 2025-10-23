@@ -1,1 +1,176 @@
+openapi: "3.0.2"
+info:
+  title: API Data Motor
+  description: API untuk mengelola data Merk, Type, Tahun Publish, Harga 
+  version: '1.0.0'
+  termsOfService: https://swagger.io/terms/
+  contact:
+    name: Admin API Motor
+    email: admin@Motor.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://api.Motor.com/v1
+    description: Production server
+  - url: https://api-staging.Motor.com/v1
+    description: Staging server
+tags:
+  - name: Motor
+    description: Endpoint terkait dengan pengelolaan data Motor
+paths:
+  /Motor:
+    get:
+      tags:
+        - Motor
+      summary: Mendapatkan daftar data Motor
+      description: Mengambil semua daftar data Motor yang terdaftar.
+      operationId: getMotor
+      responses:
+        '200':
+          description: Daftar Motor berhasil diambil
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Motor'
+        '500':
+          description: Kesalahan server
+    post:
+      tags:
+        - Motor
+      summary: Menambahkan data Motor baru
+      description: Menambahkan data Motor baru ke dalam daftar.
+      operationId: addMotor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MotorInput'
+      responses:
+        '201':
+          description: Data berhasil dimasukan
+        '500':
+          description: Kesalahan server
 
+  /Motor/{id}:
+    get:
+      tags:
+        - Motor
+      summary: Mendapatkan detail Motor
+      description: mendapatkan informasi detail data Motor berdasarkan ID.
+      operationId: getMotorById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID Motor
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detail Motor berhasil diambil
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Motor'
+        '500':
+          description: Kesalahan server
+          
+    put:
+      tags:
+        - Motor
+      summary: Mengedit Data Motor
+      description: Mengedit data Motor berdasarkan ID.
+      operationId: editMotor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID Motor yang akan diedit
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MotorInput'
+      responses:
+        '201':
+          description: Data berhasil diedit
+        '404':
+          description: Data tidak ditemukan
+        '500':
+          description: Kesalahan server
+
+    delete:
+      tags:
+        - Motor
+      summary: Menghapus data Motor
+      description: Menghapus data Motor berdasarkan ID.
+      operationId: deleteMotor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID Motor yang akan dihapus
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Data berhasil dihapus
+        '404':
+          description: Data tidak ditemukan
+        '500':
+          description: Kesalahan server
+
+components:
+  schemas:
+    Motor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID unik Motor
+        merk:
+          type: string
+          description: Merk Motor
+        type:
+          type: string
+          description: Type Motor
+        tahun_publish:
+          type: string
+          description: Tahun Publish Motor
+        harga:
+          type: string
+          description: Harga Motor
+        rating:
+          type: number
+          format: float
+          description: Rating rata-rata Motor
+          
+    MotorInput:
+      type: object
+      properties:
+        merk:
+          type: string
+          description: Merk Motor
+        type:
+          type: string
+          description: Type Motor
+        tahun_publish:
+          type: string
+          description: Tahun Publish Motor
+        harga:
+          type: string
+          description: Harga Motor
+      required:
+        - nama
+        - lokasi
+          - nama
+          - lokasi
+        
